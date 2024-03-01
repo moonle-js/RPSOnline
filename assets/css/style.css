@@ -1,0 +1,116 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+}
+header{
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    header section{
+        background: lightcoral;
+        width: 80%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+        header section .userAddingBlock{
+            width: 45%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+            header section .userAddingBlock input,
+            header section .userAddingBlock button{
+                display: flex;
+                justify-content: center;
+                max-width: 250px;
+                align-items: center;
+                width: 80%;
+                height: 40px;
+                border-radius: 20px;
+                text-align: center;
+                cursor: pointer;
+            }
+            header section .userAddingBlock button{
+                background: lightgoldenrodyellow;
+            }
+/* main sections */
+main{
+    min-height: 80vh;
+    height: 80vh;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightcyan;
+}
+main section{
+    width: 45%;
+    height: 100% !important;
+}
+    main section#gameSection{
+        border-right: 2px solid lightcoral;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+        main section#gameSection .userSide,
+        main section#gameSection .computerSide{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            border: 2px solid red;
+            width: 100%;
+            height: 100%;
+        }
+            main section#gameSection .userSide .userGuide{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+                height: 40%;
+            }
+            main section#gameSection .userSide .userSelect{
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+                height: 40%;
+                border: 2px solid green;
+            }
+
+
+
+
+
+
+
+            main section#gameSection .computerSide .computerGuide{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+                height: 40%;
+            }
+            main section#gameSection .computerSide .computerSelect{
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+                height: 40%;
+                border: 2px solid green;
+            }
+            
