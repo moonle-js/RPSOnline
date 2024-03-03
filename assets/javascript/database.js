@@ -133,6 +133,14 @@ async function compareSelections(){
                                                         <p>${meselen.val().selected}</p>
                                                     </div>
                                                 `
+
+                                                setTimeout(function(){
+                                                    senderDecision.innerHTML = `
+                                                        <div>
+                                                            <p>Select again</p>
+                                                        </div>
+                                                    `
+                                                },2000)
                                             }
                                         })
                                     }
@@ -158,6 +166,13 @@ async function compareSelections(){
                                                         <p>${meselen.val().selected}</p>
                                                     </div>
                                                 `
+                                                setTimeout(function(){
+                                                    senderDecision.innerHTML = `
+                                                        <div>
+                                                            <p>Select again</p>
+                                                        </div>
+                                                    `
+                                                },2000)
                                             }
                                         })
                                     }
@@ -282,6 +297,12 @@ selectelementForUserFirst.forEach(function(item){
                                             set(ref(db, 'users/2/raund'), true) // burda da swith edirem novbeni ikinci usere
                                             set(ref(db, 'users/1/raund'), false)
 
+                                            document.querySelector('.senderDecision').innerHTML = `
+                                                <div>
+                                                    <p>Waiting for opponent</p>
+                                                </div>
+                                            `
+
                                             if(!t){
                                                 t = setInterval(function(){
                                                     get(ref(db, 'users/2/')).then(result => {
@@ -319,6 +340,8 @@ selectelementForUserFirst.forEach(function(item){
                                             set(ref(db, 'users/1/raund'), true)
                                             set(ref(db, 'users/2/raund'), false)
                                             
+
+
                                             get(ref(db, 'users/2/raund')).then( result => {
                                                 if(result.exists){
                                                     if(result.val() == false){
@@ -330,7 +353,11 @@ selectelementForUserFirst.forEach(function(item){
 
                                             return  false;                
                                         }else{
-                                            alert('please wait for opponent')
+                                            document.querySelector('.senderDecision').innerHTML = `
+                                                <div>
+                                                    <p>Waiting for opponent</p>
+                                                </div>
+                                            `
                                             return false;
                                         }
                                     }
