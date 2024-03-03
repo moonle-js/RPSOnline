@@ -1,60 +1,22 @@
 import db  from "/assets/javascript/script.js"
-import {get, remove,ref, set, child} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"
+import {get, onValue, remove, ref, set, child} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"
 
 // adding formats
 const firstUserNameAddingButton = document.querySelector('#setFirstUserName');
 // const secondUserNameAddingButton = document.querySelector('#setSecondUserName');
 const firstUserName = document.querySelector('#firstUserName');
-// const secondUserName = document.querySelector('#secondUserName');
 // Display names for users
 const firstUserDisplayName = document.querySelector('#firstUserDisplayName')
-// const secondUserDisplayName = document.querySelector('#secondUserDisplayName')
-
-window.addEventListener('load', async function() {
-    try {
-        await remove(ref(db), 'melumat');
-    } catch (error) {
-        console.error('Error occurred while saving data:', error);
-    }
-});
 
 
+const senderDecision = document.querySelector('#senderDecision')
 
 
-
-// // Comparing selections
-async function compareSelections(){
-    var user1Selection;
-    var user2Selection;
-
-    var firstUserName = ';'
-    var secondUserName = ';'
-
-    await get(ref(db, 'users/1')).then(result => {
-        if(result.exists()){
-            firstUserName = result.val().nameOfUser
-            user1Selection = result.val().selected
-        }
-    })
-
-    await get(ref(db, 'users/2')).then(result => {
-        if(result.exists()){
-            secondUserName = result.val().nameOfUser
-            user2Selection = result.val().selected
-        }
-    })
-    // Must be done
-    if(user1Selection == user2Selection){
-        alert('draft')
-    }else if(user1Selection == 'paper' && user2Selection == "rock"){
-        alert(`${firstUserName} won`)
-    }
-
-    
-}
 
 
 async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
+    
+
     get(ref(db, 'users/')).then(result =>{
         if(result.exists()){                    // eger users folderi varesa dalwe gedirem
             if(Object.keys(result.val()).length < 2){         // serverde nece user olub olmadigini yoxluyuram
@@ -91,6 +53,183 @@ firstUserNameAddingButton.addEventListener('click', function(){
 })
 
 
+
+var user1Score = 0;
+var user2Score = 0;
+
+
+
+// // Comparing selections
+async function compareSelections(){
+    var user1Selection;
+    var user2Selection;
+
+    var firstUserName = ''
+    var secondUserName = ''
+
+    await get(ref(db, 'users/1')).then(result => {
+        if(result.exists()){
+            firstUserName = result.val().nameOfUser
+            user1Selection = result.val().selected
+        }
+    })
+
+    await get(ref(db, 'users/2')).then(result => {
+        if(result.exists()){
+            secondUserName = result.val().nameOfUser
+            user2Selection = result.val().selected
+        }
+    })
+
+    async function showSelected(){
+        get(ref(db, 'users')).then(result => {
+            if(result.exists()){
+
+
+                get(ref(db, 'users/2')).then(data => {
+                    if(data.exists()){
+                        if(data.val().raund == false){
+                            get(ref(db, 'users/2')).then(example => {
+                                if(example.exists()){
+                                    if(example.val().nameOfUser == firstUserDisplayName.innerHTML){
+                                        get(ref(db, 'users/1')).then(meselen => {
+                                            if(meselen.exists()){
+                                                senderDecision.innerHTML = `
+                                                    <div>
+                                                        <p>Opponent Selected</p>
+                                                        <img src ="./assets/images/${meselen.val().selected}.svg">
+                                                        <p>${meselen.val().selected}</p>
+                                                    </div>
+                                                `
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+
+
+                get(ref(db, 'users/1')).then(data => {
+                    if(data.exists()){
+                        if(data.val().raund == true){
+                            get(ref(db, 'users/1')).then(example => {
+                                if(example.exists()){
+                                    if(example.val().nameOfUser == firstUserDisplayName.innerHTML){
+                                        get(ref(db, 'users/2')).then(meselen => {
+                                            if(meselen.exists()){
+                                                senderDecision.innerHTML = `
+                                                    <div>
+                                                        <p>Opponent Selected</p>
+                                                        <img src ="./assets/images/${meselen.val().selected}.svg">
+                                                        <p>${meselen.val().selected}</p>
+                                                    </div>
+                                                `
+                                            }
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+        
+        
+    
+    }
+
+    await showSelected();
+
+    function showStatistics(nameOFUserr){
+
+        set(ref(db, 'users/2/score'), user2Score)
+        set(ref(db, 'users/1/score'), user1Score)
+
+        get(ref(db, 'users/1')).then(response => {
+            if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
+                document.querySelector('.userStatus').innerHTML = response.val().status
+                document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+            }
+        })
+
+        get(ref(db, 'users/2')).then(response => {
+            if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
+                document.querySelector('.userStatus').innerHTML = response.val().status
+                document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+            }
+        })
+
+
+
+
+        
+    }
+
+    var winner;
+    if(user1Selection == user2Selection){
+        alert('draft')
+    }else if(user1Selection == 'paper' && user2Selection == "rock"){
+        set(ref(db, 'users/1/status'), 'You won')
+        set(ref(db, 'users/2/status'), 'You lost')
+
+        user1Score++;
+        
+        winner = firstUserName;
+        showStatistics(winner)
+    }else if(user1Selection == 'paper' && user2Selection == "scissors"){
+
+        set(ref(db, 'users/2/status'), 'You won')
+        set(ref(db, 'users/1/status'), 'You lost')
+
+        user2Score++;
+
+        winner = secondUserName;
+        showStatistics(winner)
+    }else if(user1Selection == 'scissors' && user2Selection == "rock"){
+
+        set(ref(db, 'users/2/status'), 'You won')
+        set(ref(db, 'users/1/status'), 'You lost')
+        
+        user2Score++;
+
+        winner = secondUserName;
+        showStatistics(winner)
+    }else if(user1Selection == 'scissors' && user2Selection == "paper"){
+
+        set(ref(db, 'users/1/status'), 'You won')
+        set(ref(db, 'users/2/status'), 'You lost')
+
+        user1Score++;
+
+        winner = firstUserName;
+        showStatistics(winner)
+    }else if(user1Selection == 'rock' && user2Selection == "scissors"){
+
+        set(ref(db, 'users/1/status'), 'You won')
+        set(ref(db, 'users/2/status'), 'You lost')
+
+        user1Score++;
+
+        winner = firstUserName;
+        showStatistics(winner)
+    }else if(user1Selection == 'rock' && user2Selection == "paper"){
+
+        set(ref(db, 'users/2/status'), 'You won')
+        set(ref(db, 'users/1/status'), 'You lost')
+       
+        user2Score++;
+
+        winner = secondUserName;
+        showStatistics(winner)
+    }
+
+}
+
+var t;
+
 // Adding selected element to database
 const selectelementForUserFirst = document.querySelectorAll('.selectelement');
 selectelementForUserFirst.forEach(function(item){
@@ -98,6 +237,8 @@ selectelementForUserFirst.forEach(function(item){
         get(ref(db, 'users/')).then(result =>{     // users folderine zapros atiram servere
             if(result.exists()){                    // eger usersde kimse varsa novbeti addima kecirem
                 if(Object.keys(result.val()).length == 2){    //eger users folderinde 2 dene user varsa girir ifin icine 
+
+                    
 
                     get(ref(db, 'users/1')).then(result => {      //user 1e zapros atiram ki yoxlasin varligini
                         if(result.exists()){               // users 1in varligini yoxluyur (her zaman olacaq onsuz, olamsa oyun baslamaz)
@@ -108,8 +249,26 @@ selectelementForUserFirst.forEach(function(item){
                                             set(ref(db, 'users/1/selected'), `${item.id}`)  // burda da selectede secilen elementin adini verirem (paper/scissors/rock)
                                             set(ref(db, 'users/2/raund'), true) // burda da swith edirem novbeni ikinci usere
                                             set(ref(db, 'users/1/raund'), false)
+
+                                            if(!t){
+                                                t = setInterval(function(){
+                                                    get(ref(db, 'users/2/')).then(result => {
+                                                        if(result.exists()){
+                                                            if(result.val().raund == false){
+                                                                compareSelections()
+                                                                clearInterval(t)
+                                                                t = undefined;
+                                                            }
+                                                        }
+                                                    })
+                                                },2000)
+                                            }
+                                            
+
                                             return false;
                                         }else{
+                                            alert('please wait for opponent')
+
                                             return false;
                                         }
                                     }
@@ -127,10 +286,19 @@ selectelementForUserFirst.forEach(function(item){
                                             set(ref(db, 'users/2/selected'), `${item.id}`)
                                             set(ref(db, 'users/1/raund'), true)
                                             set(ref(db, 'users/2/raund'), false)
+                                            
+                                            get(ref(db, 'users/2/raund')).then( result => {
+                                                if(result.exists){
+                                                    if(result.val() == false){
+                                                        compareSelections();
+                                                        return false
+                                                    }
+                                                }
+                                            })
 
-                                            compareSelections()
                                             return  false;                
                                         }else{
+                                            alert('please wait for opponent')
                                             return false;
                                         }
                                     }
@@ -147,7 +315,19 @@ selectelementForUserFirst.forEach(function(item){
                 alert('please add name for begining')         //users folderi umumen yoxdursa eventler islemeyecek
             }
         })    
-
     })
+
 })
+
+
+
+// Clear database on closing window
+
+window.addEventListener('load', async function() {
+    try {
+        await remove(ref(db), 'melumat');
+    } catch (error) {
+        console.error('Error occurred while saving data:', error);
+    }
+});
 
