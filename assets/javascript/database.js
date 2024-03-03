@@ -323,11 +323,11 @@ selectelementForUserFirst.forEach(function(item){
 
 // Clear database on closing window
 
-window.addEventListener('load', async function() {
-    try {
-        await remove(ref(db), 'melumat');
-    } catch (error) {
-        console.error('Error occurred while saving data:', error);
-    }
-});
+// window.addEventListener('load', async function() {
+//     try {
+//         await remove(ref(db), 'melumat');
+//     } catch (error) {
+//         console.error('Error occurred while saving data:', error);
+//     }
+// });
 
