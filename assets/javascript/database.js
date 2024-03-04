@@ -410,6 +410,38 @@ onValue(ref(db, 'chat'), response => {
     }
 })
 
+onValue(ref(db, 'users/2/raund'), response => {
+    if(response.exists()){
+        if(response.val() == true){
+            get(ref(db, 'users/2')).then(response => {
+                if(response.exists()){
+                    if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
+                        alert('please select')
+                    }
+                }
+            })
+        }
+    }
+})
+
+var out = 0;
+onValue(ref(db, 'users/1/raund'), response => {
+    if(response.exists()){
+        if(response.val() == true){
+            if(out >= 1){
+                get(ref(db, 'users/1')).then(response => {
+                    if(response.exists()){
+                        if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
+                            alert('please select')
+                        }
+                    }
+                })
+            }            
+            out++
+        }
+    }
+})
+
 // Clear database on closing window
 
 window.addEventListener('load', async function() {
