@@ -437,6 +437,12 @@ sendMessage.addEventListener('click', function(){
         message.value = ""
     }
 })
+document.addEventListener('keyup', function(e){
+    if(e.key == "Enter" && message.value.trim()){
+        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+        message.value = ""
+    }
+})
 
 // Chat deyisilende butun mesajlar olan boxun icini deyisdirir
 

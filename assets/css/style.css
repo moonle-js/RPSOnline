@@ -5,6 +5,9 @@
     outline: none;
     border: none;
 }
+body{
+    background: #18122B;
+}
 img{
     width: 50px;
     height: 50px;
@@ -18,15 +21,13 @@ header{
     align-items: center;
 }
     header section{
-        background: lightcoral;
+        background: #635985;
         width: 80%;
         height: 100%;
         display: flex;
-        justify-content: space-between;
         align-items: center;
     }
         header section .userAddingBlock{
-            border: 2px solid red;
             width: 45%;
             height: 100%;
             display: flex;
@@ -34,14 +35,29 @@ header{
             align-items: center;
             justify-content: space-evenly;
         }
+        #firstUserName{
+            background: #EADFB4;
+        }
+        #setFirstUserName{
+            color: #18122B;
+            font-size: 1.1em;
+            transition: .3s all ease;
+        }
+        #setFirstUserName:hover{
+            box-shadow: 1px 1px 5px #000;
+            transform: translateY(-10px);
+        }
         /* user terefden gelen melumatlari gosterme */
         header section .senderDecision{
             width: 50%;
-            height: 100%;
+            margin-left: calc(44% - 300px);
+            max-width: 300px;
+            background: #443C68;
+            border-radius: 15px;
+            height: 80%;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 2px solid green;
         }
             header section .senderDecision div{
                 width: 100%;
@@ -52,11 +68,12 @@ header{
                 justify-content: space-evenly;
             }
                 header section .senderDecision div img{
-                    width: 100px;
-                    height: 100px;
+                    width: 80px;
+                    height: 80px;
                 }
                 header section .senderDecision div p{
-                    color: #fff;
+                    color: #EADFB4;
+
                     font-size: 22px;
                     text-transform: capitalize;
                 }
@@ -73,7 +90,12 @@ header{
                 cursor: pointer;
             }
             header section .userAddingBlock button{
-                background: lightgoldenrodyellow;
+                background: #EADFB4;
+            }
+
+            fieldset{
+                background: #635985;
+                border-radius: 15px;
             }
 /* main sections */
 main{
@@ -84,15 +106,16 @@ main{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: lightcyan;
+    background: #443C68;
+    color: #EADFB4;
 }
 main section{
     width: 45%;
     height: 100% !important;
 }
     main section#gameSection{
-        border-right: 2px solid lightcoral;
         display: flex;
+        padding: 15px;
         align-items: center;
         justify-content: space-between;
     }
@@ -101,10 +124,13 @@ main section{
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 20px;
             justify-content: space-evenly;
-            border: 2px solid red;
             width: 100%;
+            border-radius: 15px;
             height: 100%;
+            background: #18122B;
+            border: 2px solid #443C68;
         }
             main section#gameSection .userSide .userGuide{
                 display: flex;
@@ -120,7 +146,6 @@ main section{
                 align-items: center;
                 width: 100%;
                 height: 40%;
-                border: 2px solid green;
             }
                 main section#gameSection .userSide .userSelect .selectelement{
                     cursor: pointer;
@@ -156,31 +181,44 @@ main section{
                 align-items: center;
                 width: 100%;
                 height: 40%;
-                border: 2px solid green;
             }
             
 
     /* Chat section */
 
 #chatSection{
+    margin-right: 25px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 50%;
-    height: 100%;
-    min-height: 100%;
-    border: 2px solid purple;
+    height: 80% !important;
+    min-height: 80%;
+    background: #635985;
+    border-radius: 20px;
+    padding: 15px;
 }
     #messagesFromDB{
         width: 100%;
-        height: 90%;
+        height: 80%;
+        min-height: 80%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         padding: 10px;
-        overflow-x: hidden;
+        padding-bottom: 20px;
+        overflow-y: scroll;
+        background: #EADFB4;
+        border-radius: 15px;
+        color: #18122B;
     }
-
+        #messagesFromDB div{
+            padding: 15px;
+            border-radius: 15px;
+            background: #443C68;
+            color: #EADFB4;
+            margin: 10px;
+        }
     .sendToDB{
         display: flex;
         width: 100%;
@@ -195,7 +233,9 @@ main section{
             align-items: center;
             width: 80%;
             height: 100%;
-            border: 2px solid green;
+            border-radius: 15px;
+            background: #EADFB4;
+            color: #18122B;
         }
         .sendToDB #sendMessage{
             width: 15%;
@@ -203,7 +243,12 @@ main section{
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 35px;
-            background: lightseagreen;
+            border-radius: 15px;
+            color: #EADFB4;
+            background: #443C68;
+            transition: .4s all ease;
             cursor: pointer;
+        }
+        .sendToDB #sendMessage:hover{
+            font-size: 1.1em;
         }
