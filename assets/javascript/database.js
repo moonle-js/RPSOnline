@@ -44,7 +44,26 @@ const firstUserDisplayName = document.querySelector('#firstUserDisplayName')
 const senderDecision = document.querySelector('#senderDecision')
 
 
+var user1Score = 0;
+var user2Score = 0;
 
+
+onValue(ref(db, 'users'), response => {
+    if(response.exists()){
+        get(ref(db, 'users/1')).then(data => {
+            if(data.exists()){
+                get(ref(db, 'users/2')).then(cavab => {
+                    if(cavab.exists()){
+                        document.querySelector('.userScore').innerHTML = `
+                            <p>${data.val().nameOfUser} score is: ${data.val().score}</p>
+                            <p>${cavab.val().nameOfUser} score is: ${cavab.val().score}</p>
+                        `
+                    }
+                })
+            }
+        })
+    }
+})
 
 async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
     
@@ -57,11 +76,21 @@ async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
                         firstUserDisplayName.innerHTML = `${firstUserName.value.trim()}`
                         set(ref(db, `users/2/nameOfUser`), `${nameOfUser}`)
                         set(ref(db, `users/2/raund`), false)
+                        set(ref(db, `users/1/raund`), true)
+                        set(ref(db, 'users/1/score'), 0)
+                        set(ref(db, 'users/2/score'), 0)
+                    document.querySelector('#senderDecision').innerHTML = ""
+
                         return
                     }else{                                      //eger user 1 yoxdursa user 1i set edirem
                         firstUserDisplayName.innerHTML = `${firstUserName.value.trim()}`
                         set(ref(db, `users/1/nameOfUser`), `${nameOfUser}`)
                         set(ref(db, `users/1/raund`), true)
+                        set(ref(db, `users/2/raund`), false)
+                        set(ref(db, 'users/1/score'), 0)
+                        set(ref(db, 'users/2/score'), 0)
+                    document.querySelector('#senderDecision').innerHTML = ""
+
                         return
                     }
                 })
@@ -84,10 +113,6 @@ firstUserNameAddingButton.addEventListener('click', function(){
     }
 })
 
-
-
-var user1Score = 0;
-var user2Score = 0;
 
 
 
@@ -117,7 +142,7 @@ async function compareSelections(){
         get(ref(db, 'users')).then(result => {
             if(result.exists()){
 
-
+                // secilen elementleri gosterir ki kim ne secib
                 get(ref(db, 'users/2')).then(data => {
                     if(data.exists()){
                         if(data.val().raund == false){
@@ -142,10 +167,10 @@ async function compareSelections(){
                                                 setTimeout(function(){
                                                     senderDecision.innerHTML = `
                                                         <div>
-                                                            <p>Select again</p>
+                                                            <p>Wait for first user</p>
                                                         </div>
                                                     `
-                                                },2000)
+                                                },3000)
                                             }
                                         })
                                     }
@@ -179,7 +204,7 @@ async function compareSelections(){
                                                             <p>Select again</p>
                                                         </div>
                                                     `
-                                                },2000)
+                                                },3000)
                                             }
                                         })
                                     }
@@ -201,22 +226,32 @@ async function compareSelections(){
 
         set(ref(db, 'users/2/score'), user2Score)
         set(ref(db, 'users/1/score'), user1Score)
-
+        // burda da nece xallar oldugunu gosterir
         get(ref(db, 'users/1')).then(response => {
             if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
                 document.querySelector('.userStatus').innerHTML = response.val().status
-                document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+                // document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+
+                // get(ref(db, 'users/2')).then(response => {
+                //     if(response.exists()){
+                //         document.querySelector('.userScore').innerHTML += `<p>${response.val().nameOfUser} score is: ${response.val().score}</p>`
+                //     }
+                // })
             }
         })
 
         get(ref(db, 'users/2')).then(response => {
             if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
                 document.querySelector('.userStatus').innerHTML = response.val().status
-                document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+                // document.querySelector('.userScore').innerHTML = `Your score is: ${response.val().score}`
+
+                // get(ref(db, 'users/1')).then(response => {
+                //     if(response.exists()){
+                //         document.querySelector('.userScore').innerHTML += `<p>${response.val().nameOfUser} score is: ${response.val().score}</p>`
+                //     }
+                // })
             }
         })
-
-
 
 
         
@@ -395,20 +430,31 @@ selectelementForUserFirst.forEach(function(item){
 const message = document.querySelector('#messageValue');
 const sendMessage = document.querySelector('#sendMessage');
 
-
+// mesajlari databazaya elave edir
 sendMessage.addEventListener('click', function(){
     if(message.value.trim()){
         set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
-        
+        message.value = ""
     }
 })
 
+// Chat deyisilende butun mesajlar olan boxun icini deyisdirir
+
 onValue(ref(db, 'chat'), response => {
     if(response.exists()){
-        console.log('chans')
-        document.querySelector('#messagesFromDB').innerHTML += response.val()
+        if(response.val() == ' '){
+            document.querySelector('#messagesFromDB').innerHTML = ''
+            document.querySelector('.userScore').innerHTML = "Your score is: "
+        }else{
+            document.querySelector('#messagesFromDB').innerHTML += response.val()
+        }
     }
 })
+
+
+
+
+
 
 onValue(ref(db, 'users/2/raund'), response => {
     if(response.exists()){
@@ -416,7 +462,7 @@ onValue(ref(db, 'users/2/raund'), response => {
             get(ref(db, 'users/2')).then(response => {
                 if(response.exists()){
                     if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
-                        alert('please select')
+                        document.querySelector('#senderDecision').innerHTML = "<div><p>Please select</p></div>"
                     }
                 }
             })
@@ -424,31 +470,36 @@ onValue(ref(db, 'users/2/raund'), response => {
     }
 })
 
-var out = 0;
-onValue(ref(db, 'users/1/raund'), response => {
-    if(response.exists()){
-        if(response.val() == true){
-            if(out >= 1){
-                get(ref(db, 'users/1')).then(response => {
-                    if(response.exists()){
-                        if(response.val().nameOfUser == firstUserDisplayName.innerHTML){
-                            alert('please select')
-                        }
-                    }
-                })
-            }            
-            out++
-        }
-    }
-})
 
 // Clear database on closing window
 
-window.addEventListener('load', async function() {
-    try {
-        await remove(ref(db));
-    } catch (error) {
-        console.error('Error occurred while saving data:', error);
-    }
+
+window.addEventListener('beforeunload', async function(e) {
+    e.preventDefault()
+    set(ref(db, 'chat'), ' ')
+    get(ref(db, 'users/')).then(response => {
+        if(response.exists()){
+            for(let key in response.val()){
+                if(response.val()[key].nameOfUser == firstUserDisplayName.innerHTML){
+                    if(key == 1){
+                        remove(ref(db, `users/${key}`))
+                        remove(ref(db, `users/2/selected`))
+                        remove(ref(db, `users/2/status`))
+                        remove(ref(db, `users/2/raund`))
+                        user1Score = 0;
+                        user2Score = 0;
+                    }else if (key == 2){
+                        remove(ref(db, `users/${key}`))
+                        remove(ref(db, `users/1/selected`))
+                        remove(ref(db, `users/1/status`))
+                        remove(ref(db, `users/1/raund`))
+                        user1Score = 0;
+                        user2Score = 0;
+                    }
+                }
+            }
+        }
+    })
 });
+
 
