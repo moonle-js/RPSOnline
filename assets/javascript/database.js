@@ -450,7 +450,6 @@ onValue(ref(db, 'chat'), response => {
     if(response.exists()){
         if(response.val() == ' '){
             document.querySelector('#messagesFromDB').innerHTML = ''
-            document.querySelector('.userScore').innerHTML = "Your score is: "
         }else{
             document.querySelector('#messagesFromDB').innerHTML += response.val()
         }
@@ -458,7 +457,34 @@ onValue(ref(db, 'chat'), response => {
 })
 
 
-
+document.onchange = function(){
+    setTimeout(function(){
+        get(ref(db, 'users/1')).then(resultat => {
+            if(resultat.exists()){
+                document.querySelectorAll('#messagesFromDB div').forEach(function(item){
+                    if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
+                        if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
+                            item.style.alignSelf = 'flex-end'
+                        }
+                    }
+                })
+            }
+        })
+    
+        get(ref(db, 'users/2')).then(resultat => {
+            if(resultat.exists()){
+                document.querySelectorAll('#messagesFromDB div').forEach(function(item){
+                    if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
+                        if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
+                            item.style.alignSelf = 'flex-end'
+                        }
+                    }
+                })
+            }
+        })
+    },100)
+    
+}
 
 
 
