@@ -1,4 +1,4 @@
-import {get,remove, ref, set} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"
+import {get,remove, onValue, ref, set} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"
 
 
 
@@ -126,13 +126,18 @@ async function compareSelections(){
                                     if(example.val().nameOfUser == firstUserDisplayName.innerHTML){
                                         get(ref(db, 'users/1')).then(meselen => {
                                             if(meselen.exists()){
-                                                senderDecision.innerHTML = `
-                                                    <div>
-                                                        <p>Opponent Selected</p>
-                                                        <img src ="./assets/images/${meselen.val().selected}.svg">
-                                                        <p>${meselen.val().selected}</p>
-                                                    </div>
-                                                `
+
+                                                get(ref(db, 'users/1')).then(opponentName => 
+                                                    senderDecision.innerHTML = `
+                                                        <div>
+                                                            <p>${opponentName.val().nameOfUser} Selected</p>
+                                                            <img src ="./assets/images/${meselen.val().selected}.svg">
+                                                            <p>${meselen.val().selected}</p>
+                                                        </div>
+                                                    `
+                                                )
+
+                                                
 
                                                 setTimeout(function(){
                                                     senderDecision.innerHTML = `
@@ -159,13 +164,15 @@ async function compareSelections(){
                                     if(example.val().nameOfUser == firstUserDisplayName.innerHTML){
                                         get(ref(db, 'users/2')).then(meselen => {
                                             if(meselen.exists()){
-                                                senderDecision.innerHTML = `
-                                                    <div>
-                                                        <p>Opponent Selected</p>
-                                                        <img src ="./assets/images/${meselen.val().selected}.svg">
-                                                        <p>${meselen.val().selected}</p>
-                                                    </div>
-                                                `
+                                                get(ref(db, 'users/2')).then(opponentName => 
+                                                    senderDecision.innerHTML = `
+                                                        <div>
+                                                            <p>${opponentName.val().nameOfUser} Selected</p>
+                                                            <img src ="./assets/images/${meselen.val().selected}.svg">
+                                                            <p>${meselen.val().selected}</p>
+                                                        </div>
+                                                    `
+                                                )
                                                 setTimeout(function(){
                                                     senderDecision.innerHTML = `
                                                         <div>
@@ -217,7 +224,9 @@ async function compareSelections(){
 
     var winner;
     if(user1Selection == user2Selection){
-        alert('draft')
+        set(ref(db, 'users/1/status'), 'Draft')
+        set(ref(db, 'users/2/status'), 'Draft')
+        showStatistics()
     }else if(user1Selection == 'paper' && user2Selection == "rock"){
         set(ref(db, 'users/1/status'), 'You won')
         set(ref(db, 'users/2/status'), 'You lost')
@@ -380,11 +389,32 @@ selectelementForUserFirst.forEach(function(item){
 
 
 
+
+// messages section
+
+const message = document.querySelector('#messageValue');
+const sendMessage = document.querySelector('#sendMessage');
+
+
+sendMessage.addEventListener('click', function(){
+    if(message.value.trim()){
+        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+        
+    }
+})
+
+onValue(ref(db, 'chat'), response => {
+    if(response.exists()){
+        console.log('chans')
+        document.querySelector('#messagesFromDB').innerHTML += response.val()
+    }
+})
+
 // Clear database on closing window
 
 window.addEventListener('load', async function() {
     try {
-        await remove(ref(db), 'melumat');
+        await remove(ref(db));
     } catch (error) {
         console.error('Error occurred while saving data:', error);
     }

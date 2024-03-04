@@ -159,3 +159,51 @@ main section{
                 border: 2px solid green;
             }
             
+
+    /* Chat section */
+
+#chatSection{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 50%;
+    height: 100%;
+    min-height: 100%;
+    border: 2px solid purple;
+}
+    #messagesFromDB{
+        width: 100%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        overflow-x: hidden;
+    }
+
+    .sendToDB{
+        display: flex;
+        width: 100%;
+        height: 10%;
+        justify-content: space-between;
+        align-items: center;
+    }
+        .sendToDB #messageValue{
+            display: flex;
+            padding: 10px;
+            justify-content: flex-start;
+            align-items: center;
+            width: 80%;
+            height: 100%;
+            border: 2px solid green;
+        }
+        .sendToDB #sendMessage{
+            width: 15%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 35px;
+            background: lightseagreen;
+            cursor: pointer;
+        }
