@@ -103,6 +103,8 @@ async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
             set(ref(db, `users/1/raund`), true)
         }
     })    
+    firstUserNameAddingButton.style.zIndex = "-50"
+
 }
 
 
