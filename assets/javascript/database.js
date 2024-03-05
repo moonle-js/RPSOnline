@@ -442,15 +442,23 @@ const sendMessage = document.querySelector('#sendMessage');
 // mesajlari databazaya elave edir
 sendMessage.addEventListener('click', function(){
     if(message.value.trim()){
-        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+        if(firstUserDisplayName.innerHTML.trim() != "Please enter the name"){
+            set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML} : ${message.value.trim()}</div>`).then(showMessages())
+        }else{
+            alert('enter the name first')
+        }
         message.value = ""
     }
 
 })
 
 document.addEventListener('keyup', function(e){
-    if(e.key == "Enter" && message.value.trim()){
-        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+    if(e.key == "Enter" && message.value.trim() && firstUserDisplayName.innerHTML != "Please enter the name"){
+        if(firstUserDisplayName.innerHTML.trim() != "Please enter the name"){
+            set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML} : ${message.value.trim()}</div>`).then(showMessages())
+        }else{
+            alert('enter the name first')
+        }
         message.value = ""
     }
 })
@@ -468,17 +476,14 @@ onValue(ref(db, 'chat'), response => {
 })
 
 
-document.onchange = function(){
-    setTimeout(function(){
+function showMessages(){
         get(ref(db, 'users/1')).then(resultat => {
             if(resultat.exists()){
                 document.querySelectorAll('#messagesFromDB div').forEach(function(item){
                     if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
-                        if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
-                            setTimeout(function(){
-                                item.style.alignSelf = 'flex-end'
+                        if(item.innerHTML.startsWith(`${firstUserDisplayName.innerHTML}`)){
+                            item.style.alignSelf = 'flex-end'
                                
-                            },1)
                         }
                     }
                 })
@@ -489,16 +494,13 @@ document.onchange = function(){
             if(resultat.exists()){
                 document.querySelectorAll('#messagesFromDB div').forEach(function(item){
                     if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
-                        if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
-                            setTimeout(function(){
-                                item.style.alignSelf = 'flex-end'
-                            },1)
+                        if(item.innerHTML.startsWith(`${firstUserDisplayName.innerHTML}`)){
+                            item.style.alignSelf = 'flex-end'
                         }
                     }
                 })
             }
         })
-    },100)
     
 }
 
