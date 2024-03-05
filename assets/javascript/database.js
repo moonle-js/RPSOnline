@@ -97,12 +97,16 @@ async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
             }else{
                 alert('server is full with users')   // eger her iki user varsa 3cu adama girmeye qoymuram
             }
+
+
         }else{                                      // eger serverde olan user 1 deil user 2dirse onda user 1i elave edirem
             firstUserDisplayName.innerHTML = `${firstUserName.value.trim()}`
             set(ref(db, `users/1/nameOfUser`), `${nameOfUser}`)
             set(ref(db, `users/1/raund`), true)
         }
-    })    
+    })
+
+    document.querySelector('#setFirstUserName').style.zIndex = '-1'
 }
 
 
@@ -433,13 +437,13 @@ const sendMessage = document.querySelector('#sendMessage');
 // mesajlari databazaya elave edir
 sendMessage.addEventListener('click', function(){
     if(message.value.trim()){
-        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+        set(ref(db, 'chat'), `<div style="display:none">${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
         message.value = ""
     }
 })
 document.addEventListener('keyup', function(e){
     if(e.key == "Enter" && message.value.trim()){
-        set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
+        set(ref(db, 'chat'), `<div style="display:none">${firstUserDisplayName.innerHTML}: ${message.value.trim()}</div>`)
         message.value = ""
     }
 })
@@ -464,7 +468,10 @@ document.onchange = function(){
                 document.querySelectorAll('#messagesFromDB div').forEach(function(item){
                     if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
                         if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
-                            item.style.alignSelf = 'flex-end'
+                            setTimeout(function(){
+                                item.style.alignSelf = 'flex-end'
+                                item.style.display = 'flex'
+                            },1)
                         }
                     }
                 })
@@ -476,7 +483,10 @@ document.onchange = function(){
                 document.querySelectorAll('#messagesFromDB div').forEach(function(item){
                     if(resultat.val().nameOfUser == firstUserDisplayName.innerHTML){
                         if(item.innerHTML.includes(`${firstUserDisplayName.innerHTML}`)){
-                            item.style.alignSelf = 'flex-end'
+                            setTimeout(function(){
+                                item.style.alignSelf = 'flex-end'
+                                item.style.display = 'flex'
+                            },1)
                         }
                     }
                 })
