@@ -533,16 +533,10 @@ window.addEventListener('beforeunload', async function(e) {
                 if(response.val()[key].nameOfUser == firstUserDisplayName.innerHTML){
                     if(key == 1){
                         remove(ref(db, `users/${key}`))
-                        remove(ref(db, `users/2/selected`))
-                        remove(ref(db, `users/2/status`))
-                        remove(ref(db, `users/2/raund`))
                         user1Score = 0;
                         user2Score = 0;
                     }else if (key == 2){
                         remove(ref(db, `users/${key}`))
-                        remove(ref(db, `users/1/selected`))
-                        remove(ref(db, `users/1/status`))
-                        remove(ref(db, `users/1/raund`))
                         user1Score = 0;
                         user2Score = 0;
                     }
@@ -570,4 +564,3 @@ function createAlert(message){
         document.querySelector('#empty').innerHTML = ``
     },2000)
 }
-
