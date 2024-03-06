@@ -523,10 +523,10 @@ onValue(ref(db, 'users/2/raund'), response => {
 
 
 // Clear database on closing window
-window.onchange = function(){
-    setInterval(function(){
+document.onchange = function(){
+    setTimeout(function(){
         document.querySelector('#messagesFromDB').scrollTop = 9999
-    },1000)
+    }, 100)
 }
 
 window.addEventListener('beforeunload', async function(e) {
