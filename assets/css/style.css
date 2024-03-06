@@ -209,6 +209,7 @@ main section{
         padding: 10px;
         padding-bottom: 20px;
         overflow-y: scroll;
+        scroll-behavior: smooth;
         background: #EADFB4;
         border-radius: 15px;
         color: #18122B;
