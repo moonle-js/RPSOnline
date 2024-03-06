@@ -7,6 +7,7 @@
 }
 body{
     background: #18122B;
+    position: relative;
 }
 img{
     width: 50px;
@@ -252,3 +253,30 @@ main section{
         .sendToDB #sendMessage:hover{
             font-size: 1.1em;
         }
+
+.notificationBlock{
+    width: 100%;
+    position: absolute;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #635985;
+    background: transparent;
+}
+    .notificationBlock .notification{
+        width: 60%;
+        max-width: 500px;
+        height: 50%;
+        max-height: 300px;
+        display: flex;
+        opacity: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 20px;
+        color: #EADFB4;
+        border: 2px solid #EADFB4;
+        background: #18122B;
+        border-radius: 15px;
+    }

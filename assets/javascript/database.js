@@ -95,7 +95,7 @@ async function addNameToDataBase(nameOfUser){   // databazaya ad elave edirem
                     }
                 })
             }else{
-                alert('server is full with users')   // eger her iki user varsa 3cu adama girmeye qoymuram
+                createAlert('server is full with users')   // eger her iki user varsa 3cu adama girmeye qoymuram
             }
         }else{                                      // eger serverde olan user 1 deil user 2dirse onda user 1i elave edirem
             firstUserDisplayName.innerHTML = `${firstUserName.value.trim()}`
@@ -366,7 +366,7 @@ selectelementForUserFirst.forEach(function(item){
 
                                             return false;
                                         }else{
-                                            alert('please wait for opponent')
+                                            createAlert('please wait for opponent')
 
                                             return false;
                                         }
@@ -414,10 +414,10 @@ selectelementForUserFirst.forEach(function(item){
 
 
                 }else{                                 
-                    alert('Wait for second user')
+                    createAlert('Wait for second user')
                 }
             }else{
-                alert('please add name for begining')         //users folderi umumen yoxdursa eventler islemeyecek
+                createAlert('please add name for begining')         //users folderi umumen yoxdursa eventler islemeyecek
             }
         })    
     })
@@ -445,7 +445,7 @@ sendMessage.addEventListener('click', function(){
         if(firstUserDisplayName.innerHTML.trim() != "Please enter the name"){
             set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML} : ${message.value.trim()}</div>`).then(showMessages())
         }else{
-            alert('enter the name first')
+            createAlert('enter the name first')
         }
         message.value = ""
     }
@@ -457,7 +457,7 @@ document.addEventListener('keyup', function(e){
         if(firstUserDisplayName.innerHTML.trim() != "Please enter the name"){
             set(ref(db, 'chat'), `<div>${firstUserDisplayName.innerHTML} : ${message.value.trim()}</div>`).then(showMessages())
         }else{
-            alert('enter the name first')
+            createAlert('enter the name first')
         }
         message.value = ""
     }
@@ -552,4 +552,22 @@ window.addEventListener('beforeunload', async function(e) {
     })
 });
 
+
+function createAlert(message){
+
+    document.querySelector('#empty').innerHTML += `
+        <div class="notificationBlock">
+            <div class="notification">
+                <p>Error occured</p>
+                <p>
+                ${message}
+                </p>
+            </div>
+        </div>
+    `
+
+    setTimeout(function(){
+        document.querySelector('#empty').innerHTML = ``
+    },2000)
+}
 
